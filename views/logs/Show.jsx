@@ -12,6 +12,7 @@ function Show (props) {
                     : 'Sweet and sound. Smooth sailing.'
                 }
             </p>
+            <p>Timestamp: {log.createdAt.toString()}</p>
             <a href='/logs'>Back to Index</a>
         </div>
     )

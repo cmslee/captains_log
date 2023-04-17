@@ -56,8 +56,27 @@ app.post('/logs', (req, res) => {
 })
 
 //edit route: edit form
-//update route: to update data based on edit
+app.get('/logs/:id/edit', (req, res) => {
+    Log.findById(req.params.id, (error, foundLog) => {
+        if(!error){
+            res.render('logs/Edit', {log: foundLog})
+        } else {
+            res.send({msg: error.message})
+        }
+    })
+})
 
+//update route: to update data based on edit
+app.put('/logs/:id', (req, res) => {
+    if (req.body.shipIsBroken === 'on'){
+        req.body.shipIsBroken = true;
+    } else {
+        req.body.shipIsBroken = false;
+    }
+    Log.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, updatedLog) => {
+        res.redirect(`/logs/${req.params.id}`)
+    })
+})
 
 //*Seed route
 
