@@ -13,8 +13,11 @@ function Index (props) {
           <ul>
             {logs.map((log) => {
                 return(
-                    <li key={log._id}>
+                    <li key={log._id} className='logs'>
                         <a href={`logs/${log._id}`}>Title: {log.title}</a>
+                        <form method='POST' action={`/logs/${log._id}?_method=DELETE`}>
+                            <input type='submit' value='delete'/>
+                        </form>
                     </li>
                 )
             })}   

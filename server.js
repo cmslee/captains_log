@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 
 //*DATA
 const Log = require('./models/logs');
@@ -14,7 +15,8 @@ app.set('view engine', 'jsx')
 app.engine('jsx', require('jsx-view-engine').createEngine());
 
 //*MIDDLEWARE
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: false}));
+app.use(methodOverride('_method'));
 
 //* ROUTES
 
@@ -48,7 +50,8 @@ app.post('/logs', (req, res) => {
     // res.send(req.body)
     Log.create(req.body, (error, createdLog) => {
         // res.send(createdLog)
-        res.redirect('/logs/:id')
+        // at the point the way you access the newly created info in this code is through the created log variable
+        res.redirect(`/logs/${createdLog._id}`)
     })
 })
 
@@ -88,6 +91,12 @@ app.get('/logs/:id', (req, res) => {
 })
 
 //delete route
+app.delete('/logs/:id', (req, res) => {
+    Log.findByIdAndRemove(req.params.id, (error, deletedLog) => {
+        //res.send(deletedLog)
+        res.redirect('/logs')
+    })
+})
 
 //wildcard
 app.get('*', (req, res) => {
